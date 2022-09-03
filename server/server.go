@@ -7,12 +7,17 @@ package main
 import (
 	"fmt"
 	"github.com/gookit/ini/v2"
+	"log"
 	"net"
 	"os"
 )
 
 // init函数
 func init() {
+
+	// 判断download目录是否存在
+	judgeFile()
+
 	// 获取当前路径
 	str, _ := os.Getwd()
 	// 在当前路径下创建cLIent.ini文件
@@ -34,6 +39,29 @@ func init() {
 	}
 }
 
+// 判断当前目录是否存在文件夹
+func judgeFile (){
+
+	// 当前文件夹路径
+	path := "./download"
+
+	// 判断download目录是否存在
+	if _, err := os.Stat(path); err == nil {
+		//fmt.Println("download文件夹存在...", path)
+		return
+	} else {
+
+		// 不存在即创建
+		//fmt.Println("download文件夹不存在", path)
+		err := os.MkdirAll(path, 0711)
+
+		if err != nil {
+			log.Println("Error creating directory")
+			log.Println(err)
+			return
+		}
+	}
+}
 
 // ReadServeriniFile // 读取ini文件
 func ReadServeriniFile(Text string) string {
@@ -50,11 +78,13 @@ func ReadServeriniFile(Text string) string {
 
 
 
+
 // 接收文件
 func recvFile(conn net.Conn, fileName string) {
 
+
 	// 按照文件名创建新文件
-	f, err := os.Create(fileName)
+	f, err := os.Create("./download/" + fileName)
 
 	if err != nil {
 		fmt.Println("os.Create err:", err)
@@ -63,7 +93,7 @@ func recvFile(conn net.Conn, fileName string) {
 	defer func(f *os.File) {
 		err := f.Close()
 		if err != nil {
-			
+
 		}
 	}(f)
 
@@ -72,13 +102,16 @@ func recvFile(conn net.Conn, fileName string) {
 	for {
 		n, _ := conn.Read(buf)
 		if n == 0 {
-			fmt.Printf("Client传过来的:[ %s ] 文件接收完成...\n",fileName)
+			fmt.Printf("Client传过来的:[ %s ] 文件接收完成,文件在当前download目录下...\n",fileName)
 			return
 		}
+
+
+
 		// 写入本地文件，读多少，写多少。
 		_, err2 := f.Write(buf[:n])
 		if err2 != nil {
-			return 
+			return
 		}
 	}
 }
