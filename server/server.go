@@ -49,6 +49,7 @@ func judgeFile (){
 	if _, err := os.Stat(path); err == nil {
 		//fmt.Println("download文件夹存在...", path)
 		return
+
 	} else {
 
 		// 不存在即创建
@@ -76,12 +77,8 @@ func ReadServeriniFile(Text string) string {
 	return value
 }
 
-
-
-
 // 接收文件
 func recvFile(conn net.Conn, fileName string) {
-
 
 	// 按照文件名创建新文件
 	f, err := os.Create("./download/" + fileName)
@@ -106,8 +103,6 @@ func recvFile(conn net.Conn, fileName string) {
 			return
 		}
 
-
-
 		// 写入本地文件，读多少，写多少。
 		_, err2 := f.Write(buf[:n])
 		if err2 != nil {
@@ -116,6 +111,7 @@ func recvFile(conn net.Conn, fileName string) {
 	}
 }
 
+// 执行程序
 func main() {
 	// 获取ini文件数据
 	ipaddress := ReadServeriniFile("socket.ipaddress")
