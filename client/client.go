@@ -25,7 +25,6 @@ func init() {
 
 	if err == nil {
 		return
-		//fmt.Printf(" 当前路径:%s/%s 文件存在\n", str, err)
 	}
 	if os.IsNotExist(err) {
 		_, err := os.OpenFile(filePath, os.O_CREATE|os.O_APPEND, os.ModePerm)
@@ -39,7 +38,6 @@ func init() {
 func ReadServeriniFile(Text string) string {
 
 	// 获取当前路径
-
 	err := ini.LoadExists("./Client.ini")
 	if err != nil {
 		panic(err)
@@ -49,7 +47,7 @@ func ReadServeriniFile(Text string) string {
 }
 
 // SendFile 发送文件到服务端
-func SendFile(filePath string, fileSize int64, conn net.Conn,revData string) {
+func SendFile(filePath string, fileSize int64, conn net.Conn,revData string ) {
 
 	f, err := os.Open(filePath)
 	if err != nil {
@@ -94,9 +92,8 @@ func SendFile(filePath string, fileSize int64, conn net.Conn,revData string) {
 	}
 }
 
-//main
-func main() {
-
+// 发送处理
+func process() {
 	// 获取ini文件数据参数
 	ipaddress := ReadServeriniFile("socket.ipaddress")
 	port := ReadServeriniFile("socket.port")
@@ -152,7 +149,6 @@ func main() {
 		}
 		revData := string(buf[:n])
 		if revData == fileName + " 文件已接收完毕..." {
-
 			//发送文件数据
 			SendFile(str, fileSize, conn,revData)
 		}
@@ -160,6 +156,11 @@ func main() {
 	}else{
 		fmt.Printf("ip地址与端口不能为空,请查看Client.ini文件是否填写参数...")
 	}
+}
 
+//main
+func main() {
+
+	process()
 
 }

@@ -114,13 +114,14 @@ func recvFile(conn net.Conn, fileName string) {
 	}
 }
 
-// 执行程序
-func main() {
+// 接收处理
+func process (){
 	// 获取ini文件数据
 	ipaddress := ReadServeriniFile("socket.ipaddress")
 	port := ReadServeriniFile("socket.port")
 	ipAndPort := ipaddress + ":" + port
 
+	// 判断ini文件是否有数据
 	if ipAndPort != "" && port != "" {
 
 		// 创建用于监听的socket
@@ -169,13 +170,19 @@ func main() {
 			if err != nil {
 				return
 			}
-
-			// 获取文件内容
+			// 获取client文件内容
 			recvFile(conn, fileName)
 		}
 	}else{
 		fmt.Printf("ip地址与端口不能为空,请查看Server.ini文件是否填写参数...")
 	}
+}
+
+
+// 执行程序
+func main() {
+
+	process()
 
 }
 
