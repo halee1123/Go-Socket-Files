@@ -15,9 +15,6 @@ import (
 // init函数
 func init() {
 
-	// 判断download目录是否存在
-	judgeFile()
-
 	// 获取当前路径
 	str, _ := os.Getwd()
 	// 在当前路径下创建cLIent.ini文件
@@ -66,8 +63,8 @@ func judgeFile (){
 
 // ReadServeriniFile // 读取ini文件
 func ReadServeriniFile(Text string) string {
-	// 获取当前路径
 
+	// 获取当前路径
 	err := ini.LoadExists("./Server.ini")
 	if err != nil {
 		panic(err)
@@ -79,6 +76,9 @@ func ReadServeriniFile(Text string) string {
 
 // 接收文件
 func recvFile(conn net.Conn, fileName string) {
+
+	// 判断download目录是否存在
+	judgeFile()
 
 	// 按照文件名创建新文件
 	f, err := os.Create("./download/" + fileName)
