@@ -92,9 +92,7 @@ func SendFile(filePath string, fileSize int64, conn net.Conn,revData string) {
 		//打印上传进度
 		fmt.Println("文件上传：" + value + "%")
 	}
-
 }
-
 
 //main
 func main() {

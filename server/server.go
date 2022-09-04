@@ -80,6 +80,9 @@ func recvFile(conn net.Conn, fileName string) {
 	// 判断download目录是否存在
 	judgeFile()
 
+	// 接收到Client传来的文件
+	fmt.Printf("正在接收Client端传来的文件 <-- [ %s ] \n",fileName)
+
 	// 按照文件名创建新文件
 	f, err := os.Create("./download/" + fileName)
 
@@ -99,7 +102,7 @@ func recvFile(conn net.Conn, fileName string) {
 	for {
 		n, _ := conn.Read(buf)
 		if n == 0 {
-			fmt.Printf("Client传过来的:[ %s ] 文件接收完成,文件在当前download目录下...\n",fileName)
+			fmt.Printf("[ %s ] 接收完成,文件存储在当前download目录下...\n",fileName)
 			return
 		}
 
